@@ -2,15 +2,12 @@ package io.freevariable.trustnet.frauddetector.stream;
 
 import io.freevariable.trustnet.frauddetector.model.Transaction;
 import io.freevariable.trustnet.frauddetector.service.FraudDetectorService;
-import org.apache.kafka.common.serialization.Serdes;
 import org.apache.kafka.streams.KeyValue;
 import org.apache.kafka.streams.StreamsBuilder;
-import org.apache.kafka.streams.kstream.Grouped;
 import org.apache.kafka.streams.kstream.KStream;
 import org.apache.kafka.streams.kstream.TimeWindows;
 import org.springframework.context.annotation.Bean;
 import org.springframework.kafka.core.KafkaTemplate;
-import org.springframework.kafka.support.serializer.JsonSerde;
 import org.springframework.stereotype.Component;
 
 import java.time.Duration;
@@ -39,7 +36,7 @@ public class FraudDetectionTopology {
 
         stream.filter((key, transaction) -> fraudDetectorService.isFraudulent(transaction))
                 .map((key, transaction) -> KeyValue.pair(transaction.getTransactionId(), transaction))
-                .groupByKey(Grouped.with(Serdes.String(), new JsonSerde<>(Transaction.class)))
+                .groupByKey()
                 .windowedBy(TimeWindows.ofSizeAndGrace(Duration.ofMinutes(1), Duration.ofMinutes(1)))
                 .count()
                 .filter((accountId, count) -> count >= 5)

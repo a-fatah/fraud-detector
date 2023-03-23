@@ -19,7 +19,7 @@ import static org.apache.kafka.streams.StreamsConfig.*;
 @Configuration
 public class StreamsConfig {
 
-    @Value("${spring.kafka.bootstrap-servers})")
+    @Value("${spring.kafka.bootstrap-servers}")
     private String bootstrapAddress;
 
     @Bean(name = KafkaStreamsDefaultConfiguration.DEFAULT_STREAMS_CONFIG_BEAN_NAME)
@@ -27,8 +27,6 @@ public class StreamsConfig {
         val props = new HashMap<String, Object>();
         props.put(APPLICATION_ID_CONFIG, "fraud-detector");
         props.put(BOOTSTRAP_SERVERS_CONFIG, bootstrapAddress);
-        props.put(DEFAULT_KEY_SERDE_CLASS_CONFIG, Serdes.String().getClass().getName());
-        props.put(DEFAULT_VALUE_SERDE_CLASS_CONFIG, Serdes.serdeFrom(Transaction.class).getClass().getName());
         return new KafkaStreamsConfiguration(props);
     }
 
