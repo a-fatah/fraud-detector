@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class FraudDetectorServiceImpl implements FraudDetectorService {
 
-    @Value("${fraud.threshold}")
+    @Value("${fraud-detector.fraud.threshold}")
     private Integer fraudThreshold;
 
     @Override
