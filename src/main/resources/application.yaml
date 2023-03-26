@@ -1,10 +1,16 @@
-spring:
-  kafka:
-    streams:
-      application-id: fraud-detector
-      bootstrap-servers: localhost:9092
-      default:
-        key:
-          serde: org.apache.kafka.common.serialization.Serdes$StringSerde
-        value:
-          serde: org.apache.kafka.common.serialization.Serdes$JsonSerde
+spring.cloud.stream:
+  function:
+    bindings:
+      fraudDetector-in-0: transactions
+      fraudDetector-out-0: fraud-alerts
+  bindings:
+    transactions:
+      destination: transactions
+      content-type: application/json
+    fraud-alerts:
+      destination: fraud-alerts
+      content-type: application/json
+
+fraud-detector:
+  fraud:
+    threshold: 100000
