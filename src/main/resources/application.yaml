@@ -6,11 +6,19 @@ spring.cloud.stream:
   bindings:
     transactions:
       destination: transactions
-      content-type: application/json
     fraud-alerts:
       destination: fraud-alerts
-      content-type: application/json
 
 fraud-detector:
   fraud:
     threshold: 100000
+spring:
+  cloud:
+    function:
+      definition: fraudDetector
+
+    stream:
+      kafka:
+        streams:
+          binder:
+            deserialization-exception-handler: logandcontinue
